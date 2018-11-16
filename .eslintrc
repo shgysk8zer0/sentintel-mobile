@@ -30,6 +30,7 @@
         "URLSearchParams": false,
         "ga": false,
         "clients": false,
-        "skipWaiting": false
+        "skipWaiting": false,
+        "PasswordCredential": false
     }
 }

@@ -4,6 +4,75 @@ import {$, ready, registerServiceWorker} from './std-js/functions.js';
 import {API} from './consts.js';
 import {alert} from './std-js/asyncDialog.js';
 
+export async function getOwnerInfo({userid, token}) {
+	const url = new URL(`owners/${userid}/${token}`, API);
+	const resp = await fetch(url);
+	const data = await resp.json();
+	return data[0];
+}
+
+async function loginWithCreds() {
+	if ('credentials' in navigator && window.PasswordCredential instanceof Function) {
+		const creds = await navigator.credentials.get({
+			password: true,
+			mediation: 'required',
+		});
+		if (creds instanceof PasswordCredential) {
+			return login({
+				userid: creds.id,
+				password: creds.password,
+				store: false,
+			});
+		} else {
+			return false;
+		}
+	} else {
+		return false;
+	}
+}
+
+async function login({userid, password, store = true}) {
+	const headers = new Headers();
+	const url = new URL('logins', API);
+	const body = JSON.stringify([{userid, password}]);
+	headers.set('Content-Type', 'application/json');
+	headers.set('Accept', 'application/json');
+	const resp = await fetch(url, {
+		mode: 'cors',
+		method: 'POST',
+		headers,
+		body,
+	});
+	if (resp.ok) {
+		const json = await resp.json();
+		if ('error' in json) {
+			throw new Error(`"${json.message}" [${json.error}]`);
+		}
+
+		const {token, userid} = json;
+		const ownerInfo = await getOwnerInfo({userid, token});
+
+		document.dispatchEvent(new CustomEvent('login', {
+			detail: {
+				resp: json,
+				ownerInfo,
+			}
+		}));
+		if (store && window.PasswordCredential instanceof Function) {
+			const creds = new PasswordCredential({
+				id: userid,
+				name: ownerInfo.name,
+				password: password,
+				iconURL: new URL('/img/adwaita-icons/status/avatar-default.svg', document.baseURI),
+			});
+			await navigator.credentials.store(creds);
+		}
+		return true;
+	} else {
+		return false;
+	}
+}
+
 async function getDrivers(token = localStorage.getItem('token')) {
 	const url = new URL([
 		'alldrivers',
@@ -61,19 +130,19 @@ ready().then(async () => {
 	$doc.toggleClass('offline', ! navigator.onLine);
 
 	$(document).on('login', async event => {
-		if (event.detail !== null && event.detail.hasOwnProperty('token')) {
-			localStorage.setItem('token', event.detail.token);
+		if (event.detail !== null && event.detail.hasOwnProperty('resp') && event.detail.resp.hasOwnProperty('token')) {
+			localStorage.setItem('token', event.detail.resp.token);
 		}
 		const drivers = await getDrivers();
 		console.table(drivers);
 		setDrivers(drivers);
-		$('[data-show-modal="#login-dialog"]').hide();
+		$('[data-show-modal="#login-dialog"], [data-click="login"]').hide();
 		$('[data-click="logout"]').unhide();
 	});
 
 	$(document).on('logout', () => {
 		localStorage.clear();
-		$('[data-show-modal="#login-dialog"]').unhide();
+		$('[data-show-modal="#login-dialog"], [data-click="login"]').unhide();
 		$('[data-click="logout"]').hide();
 		$('.driver').remove();
 	});
@@ -86,9 +155,14 @@ ready().then(async () => {
 		$(event.target.closest('[data-close]').dataset.close).close();
 	});
 
-	$('[data-click]').click(event => {
+	$('[data-click]').click(async event => {
 		const target = event.target.closest('[data-click]');
 		switch(target.dataset.click) {
+		case 'login':
+			if (! await loginWithCreds()) {
+				$('#login-dialog').showModal();
+			}
+			break;
 		case 'logout':
 			document.dispatchEvent(new CustomEvent('logout'));
 			break;
@@ -101,34 +175,18 @@ ready().then(async () => {
 		event.preventDefault();
 		try {
 			const form = new FormData(event.target);
-			const data = Object.fromEntries(form.entries());
-			const headers = new Headers();
-			const url = new URL('logins', API);
-			headers.set('Content-Type', 'application/json');
-			headers.set('Accept', 'application/json');
-			const resp = await fetch(url, {
-				headers,
-				method: 'POST',
-				mode: 'cors',
-				body: JSON.stringify([data]),
-			});
+			const {userid, password} = Object.fromEntries(form.entries());
 
-			if (resp.ok) {
-				const json = await resp.json();
-				if ('error' in json) {
-					throw new Error(`${json.message} [${json.error}]`);
-				} else {
-					document.dispatchEvent(new CustomEvent('login', {detail: json}));
-					await $(event.target.closest('dialog')).fadeOut({fill: 'none'});
-					event.target.reset();
-					event.target.closest('dialog[open]').close();
-				}
+			if (await login({userid, password, store: true})) {
+				await $(event.target.closest('dialog[open]')).fadeOut({fill: 'none'});
+				event.target.reset();
+				event.target.closest('dialog[open]').close();
 			} else {
-				throw new Error(`<${resp.url}> [${resp.status} ${resp.statusText}]`);
+				$(event.target.closest('dialog[open]')).shake();
+				event.target.querySelector('input').focus();
 			}
 		} catch(err) {
 			console.error(err);
-			$(event.target.closest('dialog')).shake();
 		}
 	});
 
