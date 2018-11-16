@@ -3,55 +3,16 @@ const config = {
 	caches: [
 		'./',
 		// JS
-		'./js/index.js',
-		'./js/std-js/deprefixer.js',
-		'./js/std-js/shims.js',
-		'./js/std-js/functions.js',
-		'./js/std-js/Notification.js',
-		'./js/consts.js',
-		'./js/std-js/esQuery.js',
-		'./js/functions.js',
-		'./js/std-js/asyncDialog.js',
+		'./js/index.min.js',
+		'https://cdn.polyfill.io/v2/polyfill.min.js',
 		// CSS
-		'./css/styles/index.css',
-		'./css/core-css/viewport.css',
-		'./css/normalize/normalize.css',
-		'./css/styles/vars.css',
-		'./css/core-css/rem.css',
-		'./css/core-css/element.css',
-		'./css/core-css/class-rules.css',
-		'./css/animate.css/animate.css',
-		'./css/core-css/animations.css',
-		'./css/core-css/fonts.css',
-		'./css/styles/layout.css',
-		'./css/core-css/utility.css',
-		'./css/styles/header.css',
-		'./css/styles/nav.css',
-		'./css/styles/sidebar.css',
-		'./css/styles/main.css',
-		'./css/styles/footer.css',
+		'./css/styles/index.min.css',
 		// Images
 		'./img/icons.svg',
 		'./img/favicon.svg',
+		'./img/logo.png',
 		// Fonts
 		'./fonts/roboto.woff2',
-		// Custom Elements
-		'./components/login-form/login-form.js',
-		'./components/login-button.js',
-		'./components/logout-button.js',
-		'./components/current-year.js',
-		'./components/offline-message.js',
-		'./components/unsupported-browser.js',
-		'./components/vehicle-list/vehicle-list.js',
-		'./components/vehicle-element/vehicle-element.js',
-		'./components/driver-list/driver-list.js',
-		'./components/driver-element/driver-element.js',
-		// Templates
-		'./components/login-form/login-form.html',
-		'./components/vehicle-element/vehicle-element.html',
-		'./components/vehicle-list/vehicle-list.html',
-		'./components/driver-list/driver-list.html',
-		'./components/driver-element/driver-element.html',
 	].map(path => new URL(path, this.registration.scope)),
 	ignored: [
 		'./manifest.json',
@@ -59,6 +20,7 @@ const config = {
 	].map(path => new URL(path, this.registration.scope)),
 	origins: [
 		location.origin,
+		'https://cdn.polyfill.io'
 		//'https://i.imgur.com',
 	],
 };
