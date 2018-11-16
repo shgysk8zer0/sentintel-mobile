@@ -2,11 +2,6 @@ const config = {
 	version: '1.0.0',
 	caches: [
 		'./',
-		// JS
-		'./js/index.min.js',
-		'https://cdn.polyfill.io/v2/polyfill.min.js',
-		// CSS
-		'./css/styles/index.min.css',
 		// Images
 		'./img/icons.svg',
 		'./img/favicon.svg',
