@@ -3,3 +3,12 @@ body > footer {
 	padding: 2rem;
 	background-color: #2E2E2E;
 }
+
+body > footer .social-link {
+	padding: 0.3rem;
+}
+
+body > footer .social-link {
+	margin-right: 0.6em;
+	font-size: 1.8rem;
+}

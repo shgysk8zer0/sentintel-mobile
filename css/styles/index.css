@@ -9,3 +9,7 @@
 @import url("../animate.css/animate.css");
 @import url("../core-css/animations.css");
 @import url("./layout.css");
+
+dialog {
+	border: none;
+}

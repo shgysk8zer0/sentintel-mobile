@@ -7,10 +7,21 @@
 		<script type="module" src="js/index.js" async=""></script>
 		<link rel="stylesheet" href="css/styles/index.css" media="all" />
 	</head>
-	<body class="background-primary color-default font-main border-box grid">
+	<body class="background-primary color-default font-main border-box">
 		<header></header>
-		<nav></nav>
-		<main></main>
+		<nav>
+			<button type="button" class="btn btn-default" data-show-modal="#login-dialog">
+				<svg class="current-color icon">
+					<use xlink:href="img/icons.svg#sign-in" />
+				</svg>
+			</button>
+			<button type="button" class="btn btn-default" data-click="logout" hidden="">
+				<svg class="current-color icon">
+					<use xlink:href="img/icons.svg#sign-out" />
+				</svg>
+			</button>
+		</nav>
+		<main class="grid"></main>
 		<footer class="relative z-1 color-alt" role="contentinfo">
 			<div id="org-info" itemprop="copyrightHolder" itemtype="http://schema.org/Organization" itemscope="">
 				<h3>
@@ -70,5 +81,40 @@
 			<time itemprop="copyrightYear">2018</time>
 			<string>All Rights Reserved</strong>
 		</footer>
+		<dialog id="login-dialog" class="animation-speed-normal animation-ease-in-out fadeIn">
+			<form name="login">
+				<fieldset>
+					<label for="login-user" title="User ID">
+						<svg class="current-color icon">
+							<use xlink:href="img/icons.svg#avatar-default" />
+						</svg>
+					</label>
+					<input type="number" name="userid" placeholder="######" autocomplete="username" required="" />
+					<br />
+					<label for="login-password" title="Password">
+						<svg class="current-color icon">
+							<use xlink:href="img/icons.svg#dialog-password" />
+						</svg>
+					</label>
+					<input type="password" name="password" id="login-password" placeholder="******" required="" />
+				</fieldset>
+				<button type="submit" class="btn btn-confirm">
+					<svg class="current-color icon">
+						<use xlink:href="img/icons.svg#sign-in" />
+					</svg>
+				</button>
+				<button type="reset" data-close="#login-dialog" class="btn btn-reject">
+					<svg class="current-color icon">
+						<use xlink:href="img/icons.svg#x" />
+					</svg>
+				</button>
+			</form>
+		</dialog>
+		<template id="driver-template">
+			<div class="driver card shadow inline-block animation-speed-fast animation-ease-in-out zoomIn">
+				<h3 data-field="drivername"></h3>
+				<button type="button" class="btn btn-default">Ping</button>
+			</div>
+		</template>
 	</body>
 </html>
