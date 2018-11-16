@@ -12,6 +12,7 @@ import {
 	getDrivers,
 	setDrivers,
 } from './functions.js';
+import {confirm} from './std-js/asyncDialog.js';
 
 if (
 	navigator.onLine
@@ -76,7 +77,9 @@ ready().then(async () => {
 			}
 			break;
 		case 'logout':
-			document.dispatchEvent(new CustomEvent('logout'));
+			if (await confirm('Are you sure you want to logout?')) {
+				document.dispatchEvent(new CustomEvent('logout'));
+			}
 			break;
 		default:
 			throw new Error(`No data-click handler for "${target.dataset.click}"`);
