@@ -1,6 +1,6 @@
 import './std-js/shims.js';
 import './std-js/deprefixer.js';
-import {$, ready} from './std-js/functions.js';
+import {$, ready, registerServiceWorker} from './std-js/functions.js';
 import {API} from './consts.js';
 import {alert} from './std-js/asyncDialog.js';
 
@@ -48,6 +48,10 @@ async function setDrivers(drivers) {
 		return content;
 	});
 	document.querySelector('main').append(...els);
+}
+
+if (document.documentElement.dataset.hasOwnProperty('serviceWorker') && ('serviceWorker' in navigator)) {
+	registerServiceWorker(document.documentElement.dataset.serviceWorker);
 }
 
 ready().then(async () => {
