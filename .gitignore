@@ -74,3 +74,6 @@ typings/
 
 # FuseBox cache
 .fusebox/
+*.min*
+*.map
+img/icons.svg

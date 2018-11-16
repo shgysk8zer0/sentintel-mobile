@@ -1,0 +1,74 @@
+:root {
+	--default-color: #343434;
+	--primary-color: #fafafa;
+	--alt-color: #fefefe;
+	--main-font: "Roboto";
+	--default-cursor: auto;
+
+	--desktop-rem: 1.3vmax;
+
+	--button-background: #1b5fcb;
+	--button-color: var(--alt-color);
+	--button-border: none;
+	--button-border-radius: 0.15rem;
+	--button-padding: 0.2em 1.2em;
+
+	--button-active-background: #1048a1;
+	--button-active-color: var(--button-color);
+	--button-active-border: var(--button-border);
+
+	--button-disabled-background: #787878;
+	--button-disabled-color: #4e4e4e;
+	--button-disabled-border: var(--button-border);
+
+	--button-confirm-background: #1FA214;
+	--button-confirm-active-background: #157a0c;
+
+	--button-reject-background: #B31414;
+	--button-reject-active-background: #7a0c0c;
+
+	--nav-height: 2rem;
+	--header-height: 30vh;
+	--footer-height: 20vh;
+	--header-bg: url("https://i.imgur.com/wJZeamRl.jpg");
+}
+
+@media (min-width: 1600px) {
+	:root {
+		--header-bg: url("https://i.imgur.com/wJZeamR.jpg");
+	}
+}
+
+@media (min-width: 1200px) and (max-width: 1599px) {
+	:root {
+		--header-bg: url("https://i.imgur.com/wJZeamRl.jpg");
+	}
+}
+
+@media (min-width: 640px) and (max-width: 1199px) {
+	:root {
+		--header-bg: url("https://i.imgur.com/wJZeamRh.jpg");
+	}
+}
+
+@media (max-width: 639px) {
+	:root {
+		--header-bg: url("https://i.imgur.com/wJZeamRtm.jpg");
+	}
+}
+
+.btn-confirm {
+	background: var(--button-confirm-background, var(--button-background));
+}
+
+.btn-confirm:active {
+	background: var(--button-confirm-active-background, var(--button-active-background));
+}
+
+.btn-reject {
+	background: var(--button-reject-background, var(--button-background));
+}
+
+.btn-reject:active {
+	background: var(--button-reject-active-background, var(--button-active-background));
+}

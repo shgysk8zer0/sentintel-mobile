@@ -1,0 +1,5 @@
+body > footer {
+	grid-area: footer;
+	padding: 2rem;
+	background-color: #2E2E2E;
+}
