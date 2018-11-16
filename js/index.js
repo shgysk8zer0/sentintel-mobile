@@ -2,6 +2,7 @@ import './std-js/shims.js';
 import './std-js/deprefixer.js';
 import {$, ready} from './std-js/functions.js';
 import {API} from './consts.js';
+import {alert} from './std-js/asyncDialog.js';
 
 async function getDrivers(token = localStorage.getItem('token')) {
 	const url = new URL([
@@ -33,7 +34,7 @@ async function setDrivers(drivers) {
 	const template = document.getElementById('driver-template').content;
 	const els = drivers.map(driver => {
 		const content = template.cloneNode(true);
-		content.querySelector('.driver').dataset.driverId = driver.driverid;
+		$('[data-driver-id]', content).data({driverId: driver.driverid});
 		$('[data-field]', content).each(field => {
 			if (driver.hasOwnProperty(field.dataset.field)) {
 				field.textContent = driver[field.dataset.field];
@@ -42,7 +43,7 @@ async function setDrivers(drivers) {
 			}
 		});
 		$('button', content).click(() => {
-			alert(`Would alert driver ${driver.driverid} to pull over`);
+			alert(`Would alert ${driver.drivername} [${driver.driverid}] to pull over`);
 		});
 		return content;
 	});

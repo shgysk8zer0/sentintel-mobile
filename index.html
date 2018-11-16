@@ -142,9 +142,13 @@
 			</form>
 		</dialog>
 		<template id="driver-template">
-			<div class="driver card shadow inline-block animation-speed-fast animation-ease-in-out zoomIn">
+			<div class="driver card shadow inline-block animation-speed-fast animation-ease-in-out zoomIn" data-driver-id="">
 				<h3 data-field="drivername"></h3>
-				<button type="button" class="btn btn-default">Ping</button>
+				<button type="button" class="btn btn-default" title="Ping Driver">
+					<svg class="current-color icon">
+						<use xlink:href="img/icons.svg#audio-speakers" />
+					</svg>
+				</button>
 			</div>
 		</template>
 	</body>
