@@ -4,25 +4,25 @@
 	background-position: top center;
 }
 
-@media (min-width: 1600px) {
+@media ((orientation: landscape) and (min-width: 1025px)) or (min-height: 1918px) {
 	#header {
 		background-image: var(--header-bg-f);
 	}
 }
 
-@media (min-width: 1200px) and (max-width: 1599px) {
+@media ((orientation: landscape) and (max-width: 1024px)) or (max-height: 1914px) {
 	#header {
 		background-image: var(--header-bg-h);
 	}
 }
 
-@media (min-width: 640px) and (max-width: 1199px) {
+@media ((orientation: landscape) and (max-width: 640px)) or (max-height: 1199px) {
 	#header {
 		background-image: var(--header-bg-l);
 	}
 }
 
-@media (max-width: 639px) {
+@media ((orientation: landscape) and (max-width: 320px)) or (max-height: 779px) {
 	#header {
 		background-image: var(--header-bg-m);
 	}
