@@ -81,6 +81,9 @@ ready().then(async () => {
 				document.dispatchEvent(new CustomEvent('logout'));
 			}
 			break;
+		case 'reload':
+			location.reload();
+			break;
 		default:
 			throw new Error(`No data-click handler for "${target.dataset.click}"`);
 		}
