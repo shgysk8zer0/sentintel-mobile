@@ -35,6 +35,13 @@
 	--header-bg-l: url("https://i.imgur.com/wJZeamRl.jpg");
 	--header-bg-m: url("https://i.imgur.com/wJZeamRm.jpg");
 	--header-bg: var(--header-bg-l);
+
+	--desktop-rem: 1.3vmax;
+
+	/* Adapting to typo in rule */
+	--tablet-tem: 1.6vmax;
+	--tablet-rem: 1.6vmax;
+	--mobile-rem: 2.3vmax;
 }
 
 .btn-confirm {
@@ -52,3 +59,4 @@
 .btn-reject:active {
 	background: var(--button-reject-active-background, var(--button-active-background));
 }
+
