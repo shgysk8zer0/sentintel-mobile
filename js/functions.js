@@ -1,5 +1,14 @@
 import {API} from './consts.js';
-import {$} from './std-js/functions.js';
+import {$, notify} from './std-js/functions.js';
+import {alert} from './std-js/asyncDialog.js';
+
+async function whenOnline() {
+	if (! navigator.onLine) {
+		await new Promise(resolve => {
+			window.addEventListener('online', () => resolve(), {once: true});
+		});
+	}
+}
 
 export async function getOwnerInfo({userid, token}) {
 	const url = new URL(`owners/${userid}/${token}`, API);
@@ -11,6 +20,7 @@ export async function getOwnerInfo({userid, token}) {
 export async function ping({token, imei}) {
 	const url = new URL(`messages/${imei}/${token}`, API);
 	const headers = new Headers();
+	await whenOnline();
 	const resp = await fetch(url, {
 		headers,
 		method: 'GET',
@@ -18,8 +28,7 @@ export async function ping({token, imei}) {
 	});
 
 	if (resp.ok) {
-		const json = await resp.json();
-		return json.status === '200';
+		return await resp.json();
 	} else {
 		throw new Error(`<${resp.url}> [${resp.status} ${resp.statusText}]`);
 	}
@@ -32,7 +41,7 @@ export async function loginWithCreds() {
 			mediation: 'required',
 		});
 		if (creds instanceof PasswordCredential) {
-			return login({
+			return await login({
 				userid: creds.id,
 				password: creds.password,
 				store: false,
@@ -51,6 +60,7 @@ export async function login({userid, password, store = true}) {
 	const body = JSON.stringify([{userid, password}]);
 	headers.set('Content-Type', 'application/json');
 	headers.set('Accept', 'application/json');
+	await whenOnline();
 	const resp = await fetch(url, {
 		mode: 'cors',
 		method: 'POST',
@@ -92,11 +102,10 @@ export async function getDrivers(token = localStorage.getItem('token')) {
 		'msgdriver',
 		token,
 	].join('/'), API);
-
-
 	const headers = new Headers();
 	headers.set('Accept', 'application/json');
 
+	await whenOnline();
 	const resp = await fetch(url, {
 		headers,
 		method: 'GET',
@@ -127,14 +136,30 @@ export async function setDrivers(drivers) {
 				field.remove();
 			}
 		});
+
 		$('[data-click="ping"]', content).click(async event => {
 			const btn = event.target.closest('[data-click="ping"]');
 			btn.disabled = true;
 			try {
-				await ping({imei: driver.imei, token: localStorage.getItem('token')});
-				btn.disabled = false;
+				await whenOnline();
+				const resp = await ping({
+					imei: driver.imei,
+					token: localStorage.getItem('token'),
+				});
+
+				if (resp.status === '200' && typeof resp.message === 'string') {
+					notify(resp.message, {
+						icon: new URL('img/octicons/alert.svg', document.baseURI),
+					}).catch(() => alert(resp.message));
+				} else if (typeof resp.message === 'string') {
+					throw new Error(resp.message);
+				} else {
+					throw new Error('An error occured');
+				}
 			} catch(err) {
 				console.error(err);
+				alert(err.message);
+			} finally {
 				btn.disabled = false;
 			}
 		});
