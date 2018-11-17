@@ -29,32 +29,12 @@
 
 	--nav-height: 2rem;
 	--header-height: 30vh;
-	--footer-height: 20vh;
-	--header-bg: url("https://i.imgur.com/wJZeamRl.jpg");
-}
-
-@media (min-width: 1600px) {
-	:root {
-		--header-bg: url("https://i.imgur.com/wJZeamR.jpg");
-	}
-}
-
-@media (min-width: 1200px) and (max-width: 1599px) {
-	:root {
-		--header-bg: url("https://i.imgur.com/wJZeamRl.jpg");
-	}
-}
-
-@media (min-width: 640px) and (max-width: 1199px) {
-	:root {
-		--header-bg: url("https://i.imgur.com/wJZeamRh.jpg");
-	}
-}
-
-@media (max-width: 639px) {
-	:root {
-		--header-bg: url("https://i.imgur.com/wJZeamRtm.jpg");
-	}
+	--footer-height: auto;
+	--header-bg-f: url("https://i.imgur.com/wJZeamR.jpg");
+	--header-bg-h: url("https://i.imgur.com/wJZeamRh.jpg");
+	--header-bg-l: url("https://i.imgur.com/wJZeamRl.jpg");
+	--header-bg-m: url("https://i.imgur.com/wJZeamRm.jpg");
+	--header-bg: var(--header-bg-l);
 }
 
 .btn-confirm {
