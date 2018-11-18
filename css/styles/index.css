@@ -10,17 +10,16 @@
 @import url("../core-css/animations.css");
 @import url("./layout.css");
 
-body {
-	line-height: 1.3;
-}
-
-dialog {
-	border: none;
-}
-
 input {
 	line-height: 1.8;
 	font-size: 1.1em;
 	margin-bottom: 0.4em;
 }
 
+.btn-confirm {
+	background: var(--button-accept-background);
+}
+
+.btn-confirm:active {
+	background: var(--button-accept-active-backgound);
+}

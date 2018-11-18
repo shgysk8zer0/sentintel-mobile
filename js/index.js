@@ -25,6 +25,7 @@ if (
 ready().then(async () => {
 	const $doc = $(document.documentElement);
 	const $login = $('form[name="login"]');
+	$doc.pickClass('no-dialog', 'dialog', document.createElement('dialog') instanceof HTMLUnknownElement);
 	$doc.replaceClass('no-js', 'js');
 	$doc.toggleClass('offline', ! navigator.onLine);
 
