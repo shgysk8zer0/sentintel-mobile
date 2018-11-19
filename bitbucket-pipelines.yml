@@ -21,6 +21,16 @@ pipelines:
   branches:
     master:
       - step:
+          name: Test
+          deployment: test
+          caches:
+            - node
+          script:
+            - npm run preinstall
+            - npm install
+            - npm run postinstall
+            - npm test
+      - step:
           name: Install
           deployment: staging
           caches:
@@ -43,5 +53,4 @@ pipelines:
             - node
           script:
             - apt-get update && apt-get install -y rsync
-            - ssh-keyscan sentineldrive.com >> ~/.ssh/known_hosts
-            - npm run rsync
+            - rsync --exclude-from $BITBUCKET_CLONE_DIR/$DEPLOY_IGNORE -r --progress --delete -s $BITBUCKET_CLONE_DIR/ $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
