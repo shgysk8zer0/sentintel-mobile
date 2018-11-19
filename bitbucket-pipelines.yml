@@ -25,11 +25,17 @@ pipelines:
           deployment: staging
           caches:
             - node
-          artifacts:
-            - img/**
           script:
             - npm run preinstall
+            - npm run install
+            - npm run postinstall
             - npm run build
+          artifacts:
+            - img/icons.svg
+            - js/index.min.js
+            - js/index.min.map
+            - css/styles/index.min.css
+            - css/styles/index.min.map
       - step:
           name: Deploy
           deployment: production

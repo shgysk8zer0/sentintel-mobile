@@ -24,7 +24,7 @@
     "remote": {
       "user": "fleetui",
       "domain": "sentineldrive.com",
-      "path": "/var/www/vhosts/sentineldrive.com/httpdocs/drivers/",
+      "path": "/var/www/vhosts/sentineldrive.com/httpdocs/SendAudio/",
       "ignorefile": "./.rsyncignore"
     }
   },
