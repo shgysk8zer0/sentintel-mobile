@@ -1,12 +1,12 @@
 {
-  "name": "sentintel-mobile",
+  "name": "sentinel-mobile",
   "version": "1.0.0",
   "author": "Chris Zuber <shgysk8zer0@gmail.com>",
   "license": "MIT",
   "private": true,
   "description": "",
   "keywords": [
-    "sentintel",
+    "sentinel",
     "vrmt"
   ],
   "config": {
@@ -20,6 +20,12 @@
       "css": "css/styles/",
       "js": "js/",
       "img": "img/"
+    },
+    "remote": {
+      "user": "fleetui",
+      "domain": "sentineldrive.com",
+      "path": "/var/www/vhosts/sentineldrive.com/httpdocs/drivers/",
+      "ignorefile": "./.rsyncignore"
     }
   },
   "scripts": {
@@ -35,7 +41,9 @@
     "lint:js": "eslint ${npm_package_config_dir_js}",
     "fix:css": "stylelint ${npm_package_config_dir_css} --fix",
     "fix:js": "eslint ${npm_package_config_dir_js} --fix",
-    "fix": "npm run fix:js && npm run fix:css"
+    "fix": "npm run fix:js && npm run fix:css",
+    "rsync": "rsync --exclude-from ${npm_package_config_remote_ignorefile} -r --progress --delete -s ./ ${npm_package_config_remote_user}@${npm_package_config_remote_domain}:${npm_package_config_remote_path}",
+    "deploy": "npm test && npm run build && npm run rsync"
   },
   "devDependencies": {
     "eslint": "^5.7.0",
