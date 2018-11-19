@@ -1,0 +1,41 @@
+# This is a sample build configuration for JavaScript.
+# Check our guides at https://confluence.atlassian.com/x/14UWN for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: node:8.11.4
+clone:
+  lfs: true
+pipelines:
+  default:
+    - step:
+        name: Test
+        deployment: test
+        caches:
+          - node
+        script:
+          - npm run preinstall
+          - npm install
+          - npm run postinstall
+          - npm test
+  branches:
+    master:
+      - step:
+          name: Install
+          deployment: staging
+          caches:
+            - node
+          artifacts:
+            - img/**
+          script:
+            - npm run preinstall
+            - npm run build
+      - step:
+          name: Deploy
+          deployment: production
+          caches:
+            - node
+          script:
+            - apt-get update && apt-get install -y rsync
+            - ssh-keyscan sentineldrive.com >> ~/.ssh/known_hosts
+            - npm run rsync
